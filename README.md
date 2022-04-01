@@ -5,4 +5,4 @@ These are datasets and codes for 'A Small Variation in Weather Conditions Could 
 
 2: File 'Dengue_number' contains dataset of dengue case count for all Southeast Asian and South American regions mentioned in the text and we have handled the missing values by replacing with the mean of the same year. (Originally, Singapore and South American regions have weekly data while Thailand has monthly data but we have converted the monthly data of Thailand to weekly data.)
 
-3: File 'Code' contains R-code for the models and simulations in the main context. some_code is the code to illustrate the multi-step prediction as well as calculating p-values for each coefficient. Other files are codes for figures in the main context and SI. Please add all datasets into your computer first.
+3: File 'Code' contains R-code for the models and simulations in the project. some_code is the code to illustrate the multi-step prediction as well as calculating p-values for each coefficient. Other files are codes for figures in the main context and SI. Please add all datasets into your computer first.
