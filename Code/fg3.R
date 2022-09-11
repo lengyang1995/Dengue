@@ -21,67 +21,6 @@ i5= 131
 thre1=  836.20
 tthre1=   3664.80
 k=      29
-##### Constant not in used anymore
-sg14=Singapore_weather
-pm10=o3=no2=t=r=numeric()
-for( i in 1:365)
-{
-  t[i]=mean(sg14$temp)
-  r[i]=mean(sg14$rain)
-}
-temp=c(t,t,t,t,t,t,t)
-rain=c(r,r,r,r,r,r,r)
-a=cumsum(pm10)
-a=c(0,a)
-b=cumsum(o3)
-b=c(0,b)
-c=cumsum(no2)
-c=c(0,c)
-h=cumsum(temp)
-h=c(0,h)
-h1=cumsum(rain)
-h1=c(0,h1)
-pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-for(j in 1:180)
-{ 
-  for(j1 in 1:length(crcase)){
-    pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-    o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-    no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
-    temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
-    rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
-  }
-}
-
-
-r1=rain_1[i4,]
-t1=temp_1[i5,]
-t1=c(t1,t1,t1)
-t1=c(t1,t1,t1)
-r1=c(r1,r1,r1)
-r1=c(r1,r1,r1)
-
-thre2=(r1-thre1)
-tthre2=(t1-tthre1)
-
-th1=thre2*(thre2>0)
-tth1=tthre2*(tthre2>0)
-
-yb=crcase[1:k]
-for(i in (k+1):2200)
-{
-  yb[i]=beta[1]*yb[i-1]+beta[2]*sum(yb[(i-k):(i-1)])*yb[i-1]+
-    beta[3]*(r1)[i]*yb[i-1]+
-    beta[4]*(th1)[i]*yb[i-1]+
-    beta[5]*(t1)[i]*yb[i-1]+
-    beta[6]*(tth1)[i]*yb[i-1]
-}
-yb=cbind(c(1:313),yb[888:1200])
-
 
 ########################### both choose mean value
 df=sg14
@@ -95,29 +34,19 @@ az=df %>%
   summarize(avg_value = mean(temp))
 t=az$avg_value
 ################################
-temp=c(t,t,t,t,t,t,t)
-rain=c(r,r,r,r,r,r,r)
-a=cumsum(pm10)
-a=c(0,a)
-b=cumsum(o3)
-b=c(0,b)
-c=cumsum(no2)
-c=c(0,c)
+temp=rep(t,200)
+rain=rep(r,200)
+
 h=cumsum(temp)
 h=c(0,h)
 h1=cumsum(rain)
 h1=c(0,h1)
-pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
+
+temp_1=matrix(data = NA,nrow=180,ncol=2500)
+rain_1=matrix(data = NA,nrow=180,ncol=2500)
 for(j in 1:180)
 { 
-  for(j1 in 1:length(crcase)){
-    pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-    o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-    no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
+  for(j1 in 1:2500){
     temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
     rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
   }
@@ -126,20 +55,14 @@ for(j in 1:180)
 
 r1=rain_1[i4,]
 t1=temp_1[i5,]
-t1=c(t1,t1,t1)
-t1=c(t1,t1,t1)
-r1=c(r1,r1,r1)
-r1=c(r1,r1,r1)
-
 thre2=(r1-thre1)
 tthre2=(t1-tthre1)
-
 th1=thre2*(thre2>0)
 tth1=tthre2*(tthre2>0)
 
 
 yb1=crcase[1:k]
-for(i in (k+1):1200)
+for(i in (k+1):2200)
 {
   yb1[i]=beta[1]*yb1[i-1]+beta[2]*sum(yb1[(i-k):(i-1)])*yb1[i-1]+
     beta[3]*(r1)[i]*yb1[i-1]+
@@ -164,30 +87,20 @@ az=df %>%
 t=az$avg_value
 t=t-1
 ################################
-temp=c(t,t,t,t,t,t,t)
-rain=c(r,r,r,r,r,r,r)
+temp=rep(t,200)
+rain=rep(r,200)
 
-a=cumsum(pm10)
-a=c(0,a)
-b=cumsum(o3)
-b=c(0,b)
-c=cumsum(no2)
-c=c(0,c)
 h=cumsum(temp)
 h=c(0,h)
 h1=cumsum(rain)
 h1=c(0,h1)
-pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
+
+
+temp_1=matrix(data = NA,nrow=180,ncol=2500)
+rain_1=matrix(data = NA,nrow=180,ncol=2500)
 for(j in 1:180)
 { 
-  for(j1 in 1:length(crcase)){
-    pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-    o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-    no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
+  for(j1 in 1:2500){
     temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
     rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
   }
@@ -196,21 +109,15 @@ for(j in 1:180)
 
 r1=rain_1[i4,]
 t1=temp_1[i5,]
-t1=c(t1,t1,t1)
-t1=c(t1,t1,t1)
-r1=c(r1,r1,r1)
-r1=c(r1,r1,r1)
-
 thre2=(r1-thre1)
 tthre2=(t1-tthre1)
-
 th1=thre2*(thre2>0)
 tth1=tthre2*(tthre2>0)
 
 
 
 yb2=crcase[1:k]
-for(i in (k+1):1200)
+for(i in (k+1):2200)
 {
   yb2[i]=beta[1]*yb2[i-1]+beta[2]*sum(yb2[(i-k):(i-1)])*yb2[i-1]+
     beta[3]*(r1)[i]*yb2[i-1]+
@@ -233,54 +140,34 @@ az=df %>%
   summarize(avg_value = max(temp))
 t=az$avg_value
 ################################
-temp=c(t,t,t,t,t,t,t)
-rain=c(r,r,r,r,r,r,r)
+temp=rep(t,200)
+rain=rep(r,200)
 
-
-
-a=cumsum(pm10)
-a=c(0,a)
-b=cumsum(o3)
-b=c(0,b)
-c=cumsum(no2)
-c=c(0,c)
 h=cumsum(temp)
 h=c(0,h)
 h1=cumsum(rain)
 h1=c(0,h1)
-pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
+
+
+temp_1=matrix(data = NA,nrow=180,ncol=2500)
+rain_1=matrix(data = NA,nrow=180,ncol=2500)
 for(j in 1:180)
 { 
-  for(j1 in 1:length(crcase)){
-    pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-    o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-    no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
+  for(j1 in 1:2500){
     temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
     rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
   }
 }
 
-
 r1=rain_1[i4,]
 t1=temp_1[i5,]
-t1=c(t1,t1,t1)
-t1=c(t1,t1,t1)
-r1=c(r1,r1,r1)
-r1=c(r1,r1,r1)
-
 thre2=(r1-thre1)
 tthre2=(t1-tthre1)
-
 th1=thre2*(thre2>0)
 tth1=tthre2*(tthre2>0)
 
-
 yb4=crcase[1:k]
-for(i in (k+1):1200)
+for(i in (k+1):2200)
 {
   yb4[i]=beta[1]*yb4[i-1]+beta[2]*sum(yb4[(i-k):(i-1)])*yb4[i-1]+
     beta[3]*(r1)[i]*yb4[i-1]+
@@ -293,12 +180,13 @@ yb4=cbind(c(1:313),yb4[888:1200])
 
 
 
-yb=as.data.frame(yb)
+
 yb1=as.data.frame(yb1)
 yb2=as.data.frame(yb2)
 yb4=as.data.frame(yb4)
 plot(yb4,ylim=c(0,8000),col='orange',type='l')
-lines(yb,col='red')
+
+
 lines(yb1,col='cyan')
 lines(yb2,col='black')
 
@@ -345,32 +233,20 @@ az=df %>%
 t=az$avg_value
 ################################
 
-temp=c(t,t,t,t,t,t,t)
-rain=c(r,r,r,r,r,r,r)
+temp=rep(t,200)
+rain=rep(r,200)
 
-
-
-a=cumsum(pm10)
-a=c(0,a)
-b=cumsum(o3)
-b=c(0,b)
-c=cumsum(no2)
-c=c(0,c)
 h=cumsum(temp)
 h=c(0,h)
 h1=cumsum(rain)
 h1=c(0,h1)
-pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
+
+
+temp_1=matrix(data = NA,nrow=180,ncol=2500)
+rain_1=matrix(data = NA,nrow=180,ncol=2500)
 for(j in 1:180)
 { 
-  for(j1 in 1:length(crcase)){
-    pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-    o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-    no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
+  for(j1 in 1:2500){
     temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
     rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
   }
@@ -379,14 +255,8 @@ for(j in 1:180)
 
 r1=rain_1[i4,]
 t1=temp_1[i5,]
-t1=c(t1,t1,t1)
-t1=c(t1,t1,t1)
-r1=c(r1,r1,r1)
-r1=c(r1,r1,r1)
-
 thre2=(r1-thre1)
 tthre2=(t1-tthre1)
-
 th1=thre2*(thre2>0)
 tth1=tthre2*(tthre2>0)
 
@@ -423,47 +293,29 @@ az=df %>%
 t=az$avg_value
 ################################
 
-temp=c(t,t,t,t,t,t,t)
-rain=c(r,r,r,r,r,r,r)
+temp=rep(t,200)
+rain=rep(r,200)
 
-
-a=cumsum(pm10)
-a=c(0,a)
-b=cumsum(o3)
-b=c(0,b)
-c=cumsum(no2)
-c=c(0,c)
 h=cumsum(temp)
 h=c(0,h)
 h1=cumsum(rain)
 h1=c(0,h1)
-pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
+
+
+temp_1=matrix(data = NA,nrow=180,ncol=2500)
+rain_1=matrix(data = NA,nrow=180,ncol=2500)
 for(j in 1:180)
 { 
-  for(j1 in 1:length(crcase)){
-    pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-    o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-    no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
+  for(j1 in 1:2500){
     temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
     rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
   }
 }
 
-
 r1=rain_1[i4,]
 t1=temp_1[i5,]
-t1=c(t1,t1,t1)
-t1=c(t1,t1,t1)
-r1=c(r1,r1,r1)
-r1=c(r1,r1,r1)
-
 thre2=(r1-thre1)
 tthre2=(t1-tthre1)
-
 th1=thre2*(thre2>0)
 tth1=tthre2*(tthre2>0)
 
@@ -501,50 +353,31 @@ az=df %>%
 t=az$avg_value
 ################################
 
-temp=c(t,t,t,t,t,t,t)
-rain=c(r,r,r,r,r,r,r)
+temp=rep(t,200)
+rain=rep(r,200)
 
-a=cumsum(pm10)
-a=c(0,a)
-b=cumsum(o3)
-b=c(0,b)
-c=cumsum(no2)
-c=c(0,c)
 h=cumsum(temp)
 h=c(0,h)
 h1=cumsum(rain)
 h1=c(0,h1)
-pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
+
+
+temp_1=matrix(data = NA,nrow=180,ncol=2500)
+rain_1=matrix(data = NA,nrow=180,ncol=2500)
 for(j in 1:180)
 { 
-  for(j1 in 1:length(crcase)){
-    pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-    o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-    no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
+  for(j1 in 1:2500){
     temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
     rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
   }
 }
 
-
 r1=rain_1[i4,]
 t1=temp_1[i5,]
-t1=c(t1,t1,t1)
-t1=c(t1,t1,t1)
-r1=c(r1,r1,r1)
-r1=c(r1,r1,r1)
-
 thre2=(r1-thre1)
 tthre2=(t1-tthre1)
-
 th1=thre2*(thre2>0)
 tth1=tthre2*(tthre2>0)
-
-
 yb7=crcase[1:k]
 for(i in (k+1):1200)
 {
@@ -556,6 +389,7 @@ for(i in (k+1):1200)
   yb7[i]=max(yb7[i],1)
 }
 yb7=cbind(c(1:313),yb7[788:1100])
+
 
 
 
@@ -605,30 +439,20 @@ for (ii in 1:90) {
   
   t=t-1.8+(0.04*ii)
   
-  temp=c(t,t,t,t,t,t,t)
-  rain=c(r,r,r,r,r,r,r)
+  temp=rep(t,200)
+  rain=rep(r,200)
   
-  a=cumsum(pm10)
-  a=c(0,a)
-  b=cumsum(o3)
-  b=c(0,b)
-  c=cumsum(no2)
-  c=c(0,c)
   h=cumsum(temp)
   h=c(0,h)
   h1=cumsum(rain)
   h1=c(0,h1)
-  pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-  o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-  no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-  temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-  rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
+  
+  
+  temp_1=matrix(data = NA,nrow=180,ncol=2500)
+  rain_1=matrix(data = NA,nrow=180,ncol=2500)
   for(j in 1:180)
   { 
-    for(j1 in 1:length(crcase)){
-      pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-      o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-      no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
+    for(j1 in 1:2500){
       temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
       rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
     }
@@ -637,18 +461,12 @@ for (ii in 1:90) {
   
   r1=rain_1[i4,]
   t1=temp_1[i5,]
-  t1=c(t1,t1,t1)
-  t1=c(t1,t1,t1)
-  r1=c(r1,r1,r1)
-  r1=c(r1,r1,r1)
-  
   thre2=(r1-thre1)
   tthre2=(t1-tthre1)
-  
   th1=thre2*(thre2>0)
   tth1=tthre2*(tthre2>0)
   
-  
+
   yb7=crcase[1:k]
   for(i in (k+1):2500)
   {
@@ -674,8 +492,8 @@ sgt1=p +theme_bw() +ylim(0,3000)+
         axis.text.y = element_text(color = "grey20", size = 20, angle = 0, hjust = 1, vjust = 0, face = "bold"),
         axis.title.y = element_text( size=25,face="bold"))
 ### calculate the effect of temperature on simulated cases
-(ss1[90]-ss1[44]) /(ss2[90]-ss2[44])/10#  +20
-(ss1[44]-ss1[1]) /(ss2[44]-ss2[1])/10 #   +96
+(ss1[90]-ss1[44]) /(ss2[90]-ss2[44])/10#  +22
+(ss1[44]-ss1[1]) /(ss2[44]-ss2[1])/10 #   +97
 ##################################### change precipitation
 ss3=numeric()
 ss4=numeric()
@@ -696,33 +514,20 @@ for (ii in 1:90) {
   r=r-5+(0.076*ii)
   r=r*(r>0)
   
-  temp=c(t,t,t,t,t,t,t)
-  rain=c(r,r,r,r,r,r,r)
-  temp=c(t,t,t,t,t,t,t)
-  rain=c(r,r,r,r,r,r,r)
+  temp=rep(t,200)
+  rain=rep(r,200)
   
-  
-  a=cumsum(pm10)
-  a=c(0,a)
-  b=cumsum(o3)
-  b=c(0,b)
-  c=cumsum(no2)
-  c=c(0,c)
   h=cumsum(temp)
   h=c(0,h)
   h1=cumsum(rain)
   h1=c(0,h1)
-  pm10_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-  o3_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-  no2_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-  temp_1=matrix(data = NA,nrow=180,ncol=length(crcase))
-  rain_1=matrix(data = NA,nrow=180,ncol=length(crcase))
+  
+  
+  temp_1=matrix(data = NA,nrow=180,ncol=2500)
+  rain_1=matrix(data = NA,nrow=180,ncol=2500)
   for(j in 1:180)
   { 
-    for(j1 in 1:length(crcase)){
-      pm10_1[j,j1]=a[181+7*(j1-1)]-a[181+7*(j1-1)-j]
-      o3_1[j,j1]=b[181+7*(j1-1)]-b[181+7*(j1-1)-j]
-      no2_1[j,j1]=c[181+7*(j1-1)]-c[181+7*(j1-1)-j]
+    for(j1 in 1:2500){
       temp_1[j,j1]=h[181+7*(j1-1)]-h[181+7*(j1-1)-j]
       rain_1[j,j1]=h1[181+7*(j1-1)]-h1[181+7*(j1-1)-j]
     }
@@ -731,14 +536,8 @@ for (ii in 1:90) {
   
   r1=rain_1[i4,]
   t1=temp_1[i5,]
-  t1=c(t1,t1,t1)
-  t1=c(t1,t1,t1)
-  r1=c(r1,r1,r1)
-  r1=c(r1,r1,r1)
-  
   thre2=(r1-thre1)
   tthre2=(t1-tthre1)
-  
   th1=thre2*(thre2>0)
   tth1=tthre2*(tthre2>0)
   
@@ -766,7 +565,7 @@ sgr1=p +theme_bw() +ylim(0,3000)+
         axis.text.y = element_text(color = "grey20", size = 20, angle = 0, hjust = 1, vjust = 0, face = "bold"),
         axis.title.y = element_text( size=25,face="bold"))
 ### calculate the effect of precipitation on simulated cases
-(ss3[90]-ss3[66]) /(ss4[90]-ss4[66])/10 ## -99
+(ss3[90]-ss3[66]) /(ss4[90]-ss4[66])/10 ## -100
 (ss3[66]-ss3[1]) /(ss4[66]-ss4[1])/10   ## 48
 
 
